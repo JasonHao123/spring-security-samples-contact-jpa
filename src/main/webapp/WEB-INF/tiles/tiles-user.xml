@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+
+    <definition name="user.base.definition" extends="base.definition">
+
+    </definition>
+  
+	<definition name="hello" extends="user.base.definition">
+		<put-attribute name="title" value="Administration" />
+		<put-attribute name="body" value="/WEB-INF/jsp/hello.jsp" />
+	</definition>
+  
+    <definition name="index" extends="user.base.definition">
+    <put-attribute name="title" value="Administration" />
+    <put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
+  </definition>
+  
+  <definition name="adminPermission" extends="user.base.definition">
+    <put-attribute name="title" value="Administration" />
+    <put-attribute name="body" value="/WEB-INF/jsp/adminPermission.jsp" />
+  </definition>
+  
+        <definition name="addPermission" extends="user.base.definition">
+    <put-attribute name="title" value="Administration" />
+    <put-attribute name="body" value="/WEB-INF/jsp/addPermission.jsp" />
+  </definition>
+  
+  
+  <definition name="deletePermission" extends="user.base.definition">
+    <put-attribute name="title" value="Administration" />
+    <put-attribute name="body" value="/WEB-INF/jsp/deletePermission.jsp" />
+  </definition>
+  
+    <definition name="add" extends="user.base.definition">
+    <put-attribute name="title" value="Administration" />
+    <put-attribute name="body" value="/WEB-INF/jsp/add.jsp" />
+  </definition>
+  
+    <definition name="deleted" extends="user.base.definition">
+    <put-attribute name="title" value="Administration" />
+    <put-attribute name="body" value="/WEB-INF/jsp/deleted.jsp" />
+  </definition>
+</tiles-definitions>
