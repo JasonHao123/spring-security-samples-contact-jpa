@@ -3,6 +3,7 @@ package org.springframework.security.samples.contacts.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.AclImpl;
 import org.springframework.security.acls.domain.BasePermission;
@@ -31,14 +32,33 @@ public class ContactManagerService implements ContactManager {
     @Override
     @PreAuthorize("hasPermission(#contact, admin)")
     public void addPermission(Contact contact, Sid recipient, Permission permission) {
-        // TODO Auto-generated method stub
+        AclImpl acl = (AclImpl) mutableAclService.readAclById(new ObjectIdentityImpl(Contact.class,
+                                                                                     contact.getId()));
+        acl.insertAce(acl.getEntries().size(), permission, recipient, true);
 
+        mutableAclService.updateAcl(acl);
+        
     }
 
     @Override
     @PreAuthorize("hasPermission(#contact, admin)")
     public void deletePermission(Contact contact, Sid recipient, Permission permission) {
-        // TODO Auto-generated method stub
+        AclImpl acl = (AclImpl) mutableAclService.readAclById(new ObjectIdentityImpl(Contact.class,
+                                                                                     contact.getId()));
+        int index = -1;
+        for(int i=0;i<acl.getEntries().size();i++) {
+            if(acl.getEntries().get(i).getSid().equals(recipient)) {
+                index = i;
+                break;
+            }
+        }
+        if(index>0) {
+            acl.deleteAce(index);
+
+            mutableAclService.updateAcl(acl);
+        }
+        
+        
 
     }
 
@@ -71,7 +91,7 @@ public class ContactManagerService implements ContactManager {
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
-//    @PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
+    @PostFilter("hasPermission(filterObject, read) or hasPermission(filterObject, admin)")
     public List<Contact> getAll() {
         
         return contactDao.findAll();
@@ -84,7 +104,7 @@ public class ContactManagerService implements ContactManager {
     }
 
     @Override
-//    @PreAuthorize("hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', read) or hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', admin)")
+    @PreAuthorize("hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', read) or hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', admin)")
     public Contact getById(Long id) {
         // TODO Auto-generated method stub
         return contactDao.getById(id);

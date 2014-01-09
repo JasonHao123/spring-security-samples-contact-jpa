@@ -49,9 +49,9 @@ public interface ContactManager {
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<String> getAllRecipients();
 
-//    @PreAuthorize(
-//            "hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', read) or " +
-//            "hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', admin)")
+    @PreAuthorize(
+            "hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', read) or " +
+            "hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', admin)")
     public Contact getById(Long id);
 
     public Contact getRandomContact();

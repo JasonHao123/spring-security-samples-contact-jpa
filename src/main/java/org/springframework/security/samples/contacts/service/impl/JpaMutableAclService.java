@@ -303,7 +303,14 @@ public class JpaMutableAclService implements MutableAclService {
             aclEntry.setAclObjectIdentity(aclDao.getObjectIdentity(objIdentity.getType(), objIdentity.getIdentifier()));
             aclEntry.setAceOrder(i);
             PrincipalSid sid = (PrincipalSid) entry.getSid();
-            aclEntry.setSid(aclDao.findAclSid(sid.getPrincipal()));
+            AclSid aclSid = aclDao.findAclSid(sid.getPrincipal());
+            if(aclSid==null) {
+                aclSid = new AclSid();
+                aclSid.setSid(sid.getPrincipal());
+                aclSid.setPrincipal(true);
+                aclSid = aclDao.createAclSid(aclSid);
+            }
+            aclEntry.setSid(aclSid);
             aclEntry.setMask(entry.getPermission().getMask());
             aclEntry.setGranting(entry.isGranting());
             aclEntry.setAuditSuccess(entry.isAuditSuccess());

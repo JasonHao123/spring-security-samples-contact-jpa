@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,14 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.security.acls.model.AccessControlEntry;
-import org.springframework.security.acls.model.Acl;
-import org.springframework.security.acls.model.MutableAcl;
-import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.acls.model.ObjectIdentity;
-import org.springframework.security.acls.model.Permission;
-import org.springframework.security.acls.model.Sid;
-import org.springframework.security.acls.model.UnloadedSidException;
 
 @Entity
 @Table(name="ACL_OBJECT_IDENTITY")
@@ -48,7 +42,7 @@ public class AclObjectIdentity implements ObjectIdentity{
     @Column(name="ENTRIES_INHERITING")
     private Boolean entriesInheriting;
     
-    @OneToMany(mappedBy="aclObjectIdentity")
+    @OneToMany(mappedBy="aclObjectIdentity",fetch=FetchType.EAGER)
     private List<AclEntry> aclEntries;
 
     public List<AclEntry> getAclEntries() {
@@ -59,9 +53,9 @@ public class AclObjectIdentity implements ObjectIdentity{
         this.aclEntries = aclEntries;
     }
 
-    public List<AccessControlEntry> getEntries() {
+    public List<AclEntry> getEntries() {
         if(aclEntries!=null) {
-            return Arrays.asList(aclEntries.toArray(new AccessControlEntry[0]));
+            return aclEntries;
         }
         return null;
     }

@@ -84,7 +84,7 @@ public class AclDaoJpa implements AclDao {
     public void deleteEntries(AclObjectIdentity objectIdentity) {
         objectIdentity = entityManager.find(AclObjectIdentity.class, objectIdentity.getId());
         if(objectIdentity.getEntries()!=null) {
-            for(AccessControlEntry entry:objectIdentity.getEntries()) {
+            for(AclEntry entry:objectIdentity.getEntries()) {
                 entityManager.remove((AclEntry)entry);
             }
         }
