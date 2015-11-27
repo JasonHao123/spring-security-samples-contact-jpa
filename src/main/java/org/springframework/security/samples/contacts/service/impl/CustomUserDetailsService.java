@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A custom {@link UserDetailsService} where user information
  * is retrieved from a JPA repository
  */
-@Service
+@Service("customUserDetailsService")
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 	
