@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.samples.contacts.dao.UserDao;
 import org.springframework.security.samples.contacts.entity.Role;
+import org.springframework.security.samples.contacts.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	private UserDao userRepository;
+	private UserRepository userRepository;
 
 	/**
 	 * Returns a populated {@link UserDetails} object. 
@@ -34,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
 			org.springframework.security.samples.contacts.entity.User domainUser = userRepository.findByUsername(username);
-			
+			if(domainUser==null) throw new UsernameNotFoundException("user not found!");
 			boolean enabled = true;
 			boolean accountNonExpired = true;
 			boolean credentialsNonExpired = true;

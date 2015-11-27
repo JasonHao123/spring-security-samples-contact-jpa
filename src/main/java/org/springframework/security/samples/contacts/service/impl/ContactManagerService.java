@@ -16,6 +16,9 @@ import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.samples.contacts.dao.ContactDao;
 import org.springframework.security.samples.contacts.entity.Contact;
+import org.springframework.security.samples.contacts.repository.ContactRepository;
+import org.springframework.security.samples.contacts.repository.RoleRepository;
+import org.springframework.security.samples.contacts.repository.UserRepository;
 import org.springframework.security.samples.contacts.service.ContactManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ContactManagerService implements ContactManager {
     
     @Autowired
-    private ContactDao contactDao;
+    private ContactRepository contactDao;
+    
+    @Autowired
+    private RoleRepository roleDao;
+    
+    @Autowired
+    private UserRepository userDao;
     
     @Autowired
     private MutableAclService mutableAclService;
@@ -67,7 +76,7 @@ public class ContactManagerService implements ContactManager {
     @Transactional
     public void create(Contact contact) {
         // TODO Auto-generated method stub
-        contact = contactDao.create(contact);
+        contact = contactDao.save(contact);
         
         // Create acl_object_identity rows (and also acl_class rows as needed
 
@@ -100,14 +109,14 @@ public class ContactManagerService implements ContactManager {
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<String> getAllRecipients() {
-        return contactDao.findAllPrincipals();
+        return userDao.findAllUsernames();
     }
 
     @Override
     @PreAuthorize("hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', read) or hasPermission(#id, 'org.springframework.security.samples.contacts.entity.Contact', admin)")
     public Contact getById(Long id) {
         // TODO Auto-generated method stub
-        return contactDao.getById(id);
+        return contactDao.findOne(id);
     }
 
     @Override

@@ -36,13 +36,13 @@
 
     <tx:annotation-driven transaction-manager="transactionManager" />
      --> 
- <!--  
+ <!--     
     <bean id="dataSourcePopulator" class="org.springframework.security.samples.contacts.utils.DataSourcePopulator">
         <property name="dataSource" ref="dataSource"/>
         <property name="mutableAclService" ref="aclService"/>
         <property name="platformTransactionManager" ref="transactionManager"/>
     </bean>
 
- -->  
+-->
 
 </beans>

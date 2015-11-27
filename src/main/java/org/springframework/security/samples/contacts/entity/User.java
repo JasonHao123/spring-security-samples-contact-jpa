@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -30,7 +31,8 @@ public class User {
     private boolean enabled;
     
     @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name="USER_ROLES")
+    @JoinTable(name="USER_ROLES",joinColumns = {@JoinColumn(name = "USER_ID")}, 
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
     private List<Role> roles;
 
     public Long getId() {
